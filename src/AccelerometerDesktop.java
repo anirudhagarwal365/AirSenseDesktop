@@ -5,9 +5,6 @@ import java.io.DataInputStream;
 import java.net.*;
 import java.util.Enumeration;
 
-/**
- * Created by anirudh on 24/12/15.
- */
 public class AccelerometerDesktop {
     static DatagramSocket sock;
     static Socket sockFoundTCP;
@@ -455,11 +452,11 @@ public class AccelerometerDesktop {
                     }
                     else if(temp.indexOf("scroll_up") >= 0){
                         System.out.println("scroll up");
-                        scrollDown();
+                        scrollUp();
                     }
                     else if(temp.indexOf("scroll_down") >= 0){
                         System.out.println("scroll up");
-                        scrollUp();
+                        scrollDown();
                     }
                     else {
                         String var[] = temp.split(",");
