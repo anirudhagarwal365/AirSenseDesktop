@@ -11,6 +11,8 @@ public class AccelerometerDesktop {
     static ServerSocket sockTCP;
     static Robot robo;
     static DataInputStream dis;
+    static String str;
+
 
     public static void main(String args[]) {
         AccelerometerDesktop ad = new AccelerometerDesktop();
@@ -20,7 +22,7 @@ public class AccelerometerDesktop {
         int port2 = 12002;
         try {
             Enumeration e = NetworkInterface.getNetworkInterfaces();
-            String str = "";
+            str = "";
             while (e.hasMoreElements()) {
                 NetworkInterface n = (NetworkInterface) e.nextElement();
                 Enumeration ee = n.getInetAddresses();
@@ -378,6 +380,8 @@ public class AccelerometerDesktop {
                         while (true) {
                             try {
                                 sockFoundTCP = sockTCP.accept();
+                                Gui.status.setText("Connected");
+                                Gui.status.setForeground(Color.GREEN);
                                 System.out.println("TCP client found on port 12002");
                                 dis = new DataInputStream(sockFoundTCP.getInputStream());
                                 break;
@@ -386,10 +390,129 @@ public class AccelerometerDesktop {
                                 System.exit(0);
                             }
                         }
+
                         while (true) {
                             try {
                                 String receivedStr = dis.readUTF();
-                                if (receivedStr.indexOf("backspace@99") != -1) {
+                                switch (receivedStr){
+                                    case "backspace@99":
+                                        doType(KeyEvent.VK_BACK_SPACE);
+                                        break;
+                                    case "enter@99":
+                                        doType(KeyEvent.VK_ENTER);
+                                        break;
+                                    case "up_press@99":
+                                        doType2_press(KeyEvent.VK_UP);
+                                        break;
+                                    case "up_unpress@99":
+                                        doType2_release(KeyEvent.VK_UP);
+                                        break;
+                                    case "down_press@99":
+                                        doType2_press(KeyEvent.VK_DOWN);
+                                        break;
+                                    case "down_unpress@99":
+                                        doType2_release(KeyEvent.VK_DOWN);
+                                        break;
+                                    case "left_press@99":
+                                        doType2_press(KeyEvent.VK_LEFT);
+                                        break;
+                                    case "left_unpress@99":
+                                        doType2_release(KeyEvent.VK_LEFT);
+                                        break;
+                                    case "right_press@99":
+                                        doType2_press(KeyEvent.VK_RIGHT);
+                                        break;
+                                    case "right_unpress@99":
+                                        doType2_release(KeyEvent.VK_RIGHT);
+                                        break;
+                                    case "esc@99":
+                                        doType(KeyEvent.VK_ESCAPE);
+                                        break;
+                                    case "slash@99":
+                                        doType(KeyEvent.VK_SLASH);
+                                        break;
+                                    case "pipe@99":
+                                        doType(KeyEvent.VK_SHIFT, KeyEvent.VK_BACK_SLASH);
+                                        break;
+                                    case "hyphen@99":
+                                        doType(KeyEvent.VK_MINUS);
+                                        break;
+                                    case "home@99":
+                                        doType(KeyEvent.VK_HOME);
+                                        break;
+                                    case "del@99":
+                                        doType(KeyEvent.VK_DELETE);
+                                        break;
+                                    case "pgup@99":
+                                        doType(KeyEvent.VK_PAGE_UP);
+                                        break;
+                                    case "pgdn@99":
+                                        doType(KeyEvent.VK_PAGE_DOWN);
+                                        break;
+                                    case "tab@99":
+                                        doType(KeyEvent.VK_TAB);
+                                        break;
+                                    case "f1@99":
+                                        doType(KeyEvent.VK_F1);
+                                        break;
+                                    case "f2@99":
+                                        doType(KeyEvent.VK_F2);
+                                        break;
+                                    case "f3@99":
+                                        doType(KeyEvent.VK_F3);
+                                        break;
+                                    case "f4@99":
+                                        doType(KeyEvent.VK_F4);
+                                        break;
+                                    case "f5@99":
+                                        doType(KeyEvent.VK_F5);
+                                        break;
+                                    case "f6@99":
+                                        doType(KeyEvent.VK_F6);
+                                        break;
+                                    case "f7@99":
+                                        doType(KeyEvent.VK_F7);
+                                        break;
+                                    case "f8@99":
+                                        doType(KeyEvent.VK_F8);
+                                        break;
+                                    case "f9@99":
+                                        doType(KeyEvent.VK_F9);
+                                        break;
+                                    case "f10@99":
+                                        doType(KeyEvent.VK_F10);
+                                        break;
+                                    case "f11@99":
+                                        doType(KeyEvent.VK_F11);
+                                        break;
+                                    case "f12@99":
+                                        doType(KeyEvent.VK_F12);
+                                        break;
+                                    case "alt_press@99":
+                                        doType2_press(KeyEvent.VK_ALT);
+                                        break;
+                                    case "alt_unpress@99":
+                                        doType2_release(KeyEvent.VK_ALT);
+                                        break;
+                                    case "ctrl_press@99":
+                                        doType2_press(KeyEvent.VK_CONTROL);
+                                        break;
+                                    case "ctrl_unpress@99":
+                                        doType2_release(KeyEvent.VK_CONTROL);
+                                        break;
+                                    case "shift_press@99":
+                                        doType2_press(KeyEvent.VK_SHIFT);
+                                        break;
+                                    case "shift_unpress@99":
+                                        doType2_release(KeyEvent.VK_SHIFT);
+                                        break;
+                                    default:
+                                        for (int i = 0; i < receivedStr.length(); i++) {
+                                            System.out.println(receivedStr.charAt(i));
+                                            myFunc(receivedStr.charAt(i) + "");
+                                        }
+                                }
+                                /*if (receivedStr.indexOf("backspace@99") != -1) {
                                     doType(KeyEvent.VK_BACK_SPACE);
                                 } else if (receivedStr.indexOf("enter@99") != -1) {
                                     doType(KeyEvent.VK_ENTER);
@@ -416,7 +539,7 @@ public class AccelerometerDesktop {
                                         System.out.println(receivedStr.charAt(i));
                                         myFunc(receivedStr.charAt(i) + "");
                                     }
-                                }
+                                }*/
                             } catch (Exception e) {
                                 System.out.println(e.toString());
                                 System.exit(0);
