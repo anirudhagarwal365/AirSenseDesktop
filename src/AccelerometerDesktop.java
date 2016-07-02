@@ -13,6 +13,8 @@ public class AccelerometerDesktop {
     static DataInputStream dis;
     static String str;
 
+    static float temp_gx, temp_gz;
+
 
     public static void main(String args[]) {
         AccelerometerDesktop ad = new AccelerometerDesktop();
@@ -371,7 +373,10 @@ public class AccelerometerDesktop {
 
 
                             default:
-                                throw new IllegalArgumentException("Cannot type character " + receivedStr);
+                                try{throw new IllegalArgumentException("Cannot type character " + receivedStr);}
+                                catch(Exception e){
+                                    System.out.println(e);
+                                }
                         }
 
                     }
@@ -594,10 +599,15 @@ public class AccelerometerDesktop {
                         PointerInfo a = MouseInfo.getPointerInfo();
                         Point b = a.getLocation();
 
-                        int prev_x = (int) b.getX();
-                        int prev_y = (int) b.getY();
-                        robo.mouseMove(prev_x - (int) (gz * 40f), prev_y - (int) (gx * 40f));
+                        if(Math.abs(temp_gz-gz)>0.002){
+                            int prev_x = (int) b.getX();
+                            int prev_y = (int) b.getY();
+                            robo.mouseMove(prev_x - (int) (gz * 40f), prev_y - (int) (gx * 40f));
+                            temp_gx = gx;
+                            temp_gz = gz;
+                        }
                     }
+
                 } catch (Exception exc) {
                     System.exit(0);
                     exc.printStackTrace();
